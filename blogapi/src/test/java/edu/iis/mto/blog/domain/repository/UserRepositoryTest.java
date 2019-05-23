@@ -16,6 +16,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import edu.iis.mto.blog.domain.model.AccountStatus;
 import edu.iis.mto.blog.domain.model.User;
 
+import static org.hamcrest.CoreMatchers.is;
+
 @RunWith(SpringRunner.class)
 @DataJpaTest
 public class UserRepositoryTest {
@@ -32,6 +34,7 @@ public class UserRepositoryTest {
     public void setUp() {
         user = new User();
         user.setFirstName("Jan");
+        user.setLastName("Kowalski");
         user.setEmail("john@domain.com");
         user.setAccountStatus(AccountStatus.NEW);
     }
@@ -61,5 +64,51 @@ public class UserRepositoryTest {
 
         Assert.assertThat(persistedUser.getId(), Matchers.notNullValue());
     }
+
+    @Test
+    public void shouldGetUserByFirstName(){
+
+        repository.save(user);
+
+        List<User> users = repository.findByFirstNameContainingOrLastNameContainingOrEmailContainingAllIgnoreCase(
+                "j", "e", "e");
+
+        Assert.assertThat(users.size(),is(1));
+    }
+
+    @Test
+    public void shouldGetUserByLastName(){
+
+        repository.save(user);
+
+        List<User> users = repository.findByFirstNameContainingOrLastNameContainingOrEmailContainingAllIgnoreCase(
+                "r", "o", "e");
+
+        Assert.assertThat(users.size(),is(1));
+    }
+
+
+    @Test
+    public void shouldGetUserByEmail(){
+
+        repository.save(user);
+
+        List<User> users = repository.findByFirstNameContainingOrLastNameContainingOrEmailContainingAllIgnoreCase(
+                "r", "e", "o");
+
+        Assert.assertThat(users.size(),is(1));
+    }
+
+    @Test
+    public void shouldNotReturnAnyUserIfPredykatNotContainAnyLetter(){
+
+        repository.save(user);
+
+        List<User> users = repository.findByFirstNameContainingOrLastNameContainingOrEmailContainingAllIgnoreCase(
+                "r", "e", "e");
+
+        Assert.assertThat(users.size(),is(0));
+    }
+
 
 }
