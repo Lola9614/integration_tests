@@ -37,7 +37,6 @@ public class ErrorHandling {
 
     }
 
-
     @ExceptionHandler(EntityNotFoundException.class)
     public void entityNotFound(EntityNotFoundException exc, HttpServletResponse response) throws IOException {
         LOGGER.error(exc.getMessage());

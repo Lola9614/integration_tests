@@ -45,8 +45,48 @@ public class LikePostTest extends FunctionalTests {
                    .expect()
                    .log()
                    .all()
-                   .statusCode(HttpStatus.SC_FORBIDDEN)
+                   .statusCode(HttpStatus.SC_OK)
                    .when()
                    .post(ADD_LIKE_TO_POST_API, 1, 1);
     }
+
+
+
+    @Test
+    public void postShouldNotLikeOwnPost() {
+        RestAssured.given()
+                   .accept(ContentType.JSON)
+                   .header("Content-Type", "application/json;charset=UTF-8")
+                   .expect()
+                   .log()
+                   .all()
+                   .statusCode(HttpStatus.SC_BAD_REQUEST)
+                   .when()
+                   .post(ADD_LIKE_TO_POST_API, 4, 2);
+    }
+
+
+    @Test
+    public void postShouldChangeIfItIsLikeTwoTimes() {
+        RestAssured.given()
+                   .accept(ContentType.JSON)
+                   .header("Content-Type", "application/json;charset=UTF-8")
+                   .expect()
+                   .log()
+                   .all()
+                   .statusCode(HttpStatus.SC_OK)
+                   .when()
+                   .post(ADD_LIKE_TO_POST_API, 1, 1);
+
+        RestAssured.given()
+                   .accept(ContentType.JSON)
+                   .header("Content-Type", "application/json;charset=UTF-8")
+                   .expect()
+                   .log()
+                   .all()
+                   .statusCode(HttpStatus.SC_OK)
+                   .when()
+                   .post(ADD_LIKE_TO_POST_API, 1, 1);
+    }
+
 }
