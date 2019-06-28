@@ -6,3 +6,4 @@ insert into user (account_status, email) values ('CONFIRMED', 'john123@domain.co
 
 insert into blog_post (id, entry, user_id) values (1, 'entry', 2)
 insert into blog_post (id, entry, user_id) values (2, 'entry', 4)
+insert into like_post (id, post_id, user_id) values (1, 1, 1)
