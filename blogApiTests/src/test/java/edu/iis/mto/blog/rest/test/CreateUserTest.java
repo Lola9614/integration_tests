@@ -41,4 +41,23 @@ public class CreateUserTest extends FunctionalTests {
                    .when()
                    .post(USER_API);
     }
+
+    @Test
+    public void postFormWithNewUserShouldStatusOK() {
+        JSONObject jsonObj = new JSONObject().put("email", "john22@domain.com");
+        jsonObj.put("firstName","John2");
+        jsonObj.put("lastName","NOwak");
+        jsonObj.put("accountStatus","NEW");
+
+        RestAssured.given()
+                   .accept(ContentType.JSON)
+                   .header("Content-Type", "application/json;charset=UTF-8")
+                   .body(jsonObj.toString())
+                   .expect()
+                   .log()
+                   .all()
+                   .statusCode(HttpStatus.SC_CREATED)
+                   .when()
+                   .post(USER_API);
+    }
 }
